@@ -33,18 +33,22 @@ function App() {
   const [logedIn, setLogedIn] = useState(false)
   const [status, setStatus] = useState(false)
   const [tooltipOpen, setTooltipOpen] = useState(false)
-  const [email, setEmail] = useState(' ')
+  const [email, setEmail] = useState('')
 
 
   useEffect(() => {
+    checkToken()
+  }, [])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
     Promise.all([apiConnect.getInitialCards(), apiConnect.getUserData()])
       .then(([initialCards, userData]) => {
         setUserInfo(userData)
         setCards(initialCards)
       })
       .catch(err => console.log(`Возникла глобальная ошибка ${err}`))
-
-    checkToken()
 
   }, [])
 
@@ -56,14 +60,22 @@ function App() {
           setLogedIn(true)
           setEmail(res.data.email)
           navigate('/main', { replace: true })
+        }).catch((err) => {
+          console.log(`Ошибка верификации ${err}`)
         })
     }
+  }
+
+  function handelLogout() {
+    localStorage.removeItem('token')
+    setLogedIn(false)
   }
 
   function handelLogin(authorizeData) {
     apiAuth.authorize(authorizeData)
       .then(data => {
         if (data.token) {
+          setEmail(authorizeData.email)
           localStorage.setItem('token', data.token)
           setLogedIn(true)
           navigate('/main')
@@ -166,6 +178,7 @@ function App() {
         <Header
           email={email}
           logedIn={logedIn}
+          handelLogout={handelLogout}
         />
 
         <Routes>

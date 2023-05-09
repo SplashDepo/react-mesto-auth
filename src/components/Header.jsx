@@ -2,8 +2,8 @@ import React from "react";
 import logo from "../images/icons/logo.svg";
 import { Link } from "react-router-dom";
 
-export default function Header({ logedIn, email, hendelLogout }) {
-  let currentPath = window.location.pathname
+export default function Header({ logedIn, email, handelLogout }) {
+  const currentPath = window.location.pathname
   return (
     <header className="header">
       <img className="logo" src={logo} alt="Логотип" />
@@ -11,7 +11,7 @@ export default function Header({ logedIn, email, hendelLogout }) {
         {logedIn ?
           (<div className="header__member">
             <p className="header__email">{email}</p>
-            <Link to='/signup' className="header__link" onClick={hendelLogout}>Выйти</Link>
+            <Link to='/signup' className="header__link" onClick={handelLogout}>Выйти</Link>
           </div>
           ) : currentPath === "/signin" ?
 
