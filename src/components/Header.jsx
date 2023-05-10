@@ -11,7 +11,7 @@ export default function Header({ logedIn, email, handelLogout }) {
         {logedIn ?
           (<div className="header__member">
             <p className="header__email">{email}</p>
-            <Link to='/signup' className="header__link" onClick={handelLogout}>Выйти</Link>
+            <Link to='/signin' className="header__link" onClick={handelLogout}>Выйти</Link>
           </div>
           ) : currentPath === "/signin" ?
 

@@ -41,16 +41,15 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-
-    Promise.all([apiConnect.getInitialCards(), apiConnect.getUserData()])
-      .then(([initialCards, userData]) => {
-        setUserInfo(userData)
-        setCards(initialCards)
-      })
-      .catch(err => console.log(`Возникла глобальная ошибка ${err}`))
-
-  }, [])
+    if (logedIn) {
+      Promise.all([apiConnect.getInitialCards(), apiConnect.getUserData()])
+        .then(([initialCards, userData]) => {
+          setUserInfo(userData)
+          setCards(initialCards)
+        })
+        .catch(err => console.log(`Возникла глобальная ошибка ${err}`))
+    }
+  }, [logedIn])
 
   function checkToken() {
     const token = localStorage.getItem('token')
